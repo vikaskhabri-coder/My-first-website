@@ -418,6 +418,87 @@
     font-weight: 700; color: var(--charcoal); font-size: 1rem;
   }
 
+  /* ── EDIT MODE LOCK ── */
+  .edit-fab {
+    position: fixed; bottom: 28px; right: 28px; z-index: 500;
+    background: var(--charcoal); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 12px 22px; font-family: inherit;
+    font-size: 0.88rem; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .edit-fab:hover { background: var(--accent); transform: translateY(-2px); }
+  .edit-fab svg { width: 15px; height: 15px; }
+  .edit-fab.active { background: #16a34a; }
+
+  /* Password modal */
+  .pw-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 2000;
+    align-items: center; justify-content: center;
+  }
+  .pw-overlay.open { display: flex; }
+  .pw-box {
+    background: var(--white); border-radius: 20px;
+    padding: 2rem; width: 90%; max-width: 360px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .pw-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem;
+  }
+  .pw-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; }
+  .pw-input {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 14px;
+    font-size: 1rem; font-family: inherit;
+    outline: none; text-align: center;
+    letter-spacing: 0.1em; transition: border-color 0.2s;
+    margin-bottom: 0.75rem;
+  }
+  .pw-input:focus { border-color: var(--accent); }
+  .pw-input.error { border-color: #e53e3e; animation: shake 0.3s; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+  }
+  .pw-submit {
+    width: 100%; background: var(--charcoal); color: var(--white);
+    border: none; border-radius: 100px; padding: 11px;
+    font-family: inherit; font-size: 0.95rem; font-weight: 500;
+    cursor: pointer; transition: background 0.2s; margin-bottom: 0.75rem;
+  }
+  .pw-submit:hover { background: var(--accent); }
+  .pw-cancel {
+    background: none; border: none; color: var(--muted);
+    font-family: inherit; font-size: 0.85rem; cursor: pointer;
+  }
+  .pw-cancel:hover { color: var(--charcoal); }
+  .pw-err { font-size: 0.82rem; color: #e53e3e; margin-bottom: 0.5rem; display: none; }
+
+  /* Edit mode indicator bar */
+  .edit-bar {
+    display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+    background: #16a34a; color: white;
+    text-align: center; font-size: 0.8rem; font-weight: 500;
+    padding: 5px; letter-spacing: 0.03em;
+  }
+  .edit-bar.visible { display: block; }
+  body.edit-active { padding-top: 28px; }
+
+  /* Hide upload/add controls when not in edit mode */
+  body:not(.edit-active) .add-card,
+  body:not(.edit-active) .reel-add,
+  body:not(.edit-active) .video-add,
+  body:not(.edit-active) .reel-placeholder input[type="file"],
+  body:not(.edit-active) .about-img-placeholder input[type="file"] { display: none !important; }
+
+  body:not(.edit-active) .reel-placeholder { pointer-events: none; }
+  body:not(.edit-active) .video-thumb-placeholder { pointer-events: none; }
+  body:not(.edit-active) .about-img-placeholder { pointer-events: none; cursor: default; }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     .nav-links { display: none; }
@@ -610,9 +691,9 @@
   <h2>Let's work together.</h2>
   <p contenteditable="true">Reach out to us — we'd love to hear about your project or answer any questions.</p>
   <div class="contact-links">
-    <a class="contact-pill" href="mailto:hello@yourbusiness.com" contenteditable="true">
+    <a class="contact-pill" href="/cdn-cgi/l/email-protection#a2cac7cececde2dbcdd7d0c0d7d1cbccc7d1d18cc1cdcf" contenteditable="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      hello@yourbusiness.com
+      <span class="__cf_email__" data-cfemail="563e333a3a39162f3923243423253f383325257835393b">[email&#160;protected]</span>
     </a>
     <a class="contact-pill" href="tel:+911234567890" contenteditable="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.45h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.1a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.45v-.53z"/></svg>
@@ -627,6 +708,27 @@
   <span contenteditable="true">© 2025 YourBrand. All rights reserved.</span>
   <span contenteditable="true" style="color: var(--muted);">Made with care.</span>
 </footer>
+
+<!-- EDIT MODE BAR -->
+<div class="edit-bar" id="editBar">✏️ Edit mode is ON — only you can see this. Click "Exit edit" when done.</div>
+
+<!-- EDIT FAB -->
+<button class="edit-fab" id="editFab" onclick="toggleEditMode()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+  <span id="editFabLabel">Edit site</span>
+</button>
+
+<!-- PASSWORD MODAL -->
+<div class="pw-overlay" id="pwModal">
+  <div class="pw-box">
+    <h3>Owner access</h3>
+    <p>Enter your password to unlock editing</p>
+    <div class="pw-err" id="pwErr">Incorrect password. Try again.</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="pw-submit" onclick="checkPassword()">Unlock editing</button>
+    <button class="pw-cancel" onclick="closePwModal()">Cancel</button>
+  </div>
+</div>
 
 <!-- LINK MODAL -->
 <div class="modal-overlay" id="linkModal">
@@ -667,6 +769,64 @@
 </div>
 
 <script>
+/* ── PASSWORD & EDIT MODE ── */
+const SITE_PASSWORD = 'Dishtv@2025'; // Change this to your own password
+let editUnlocked = false;
+
+function toggleEditMode() {
+  if (editUnlocked) {
+    disableEditMode();
+  } else {
+    document.getElementById('pwModal').classList.add('open');
+    setTimeout(() => document.getElementById('pwInput').focus(), 100);
+  }
+}
+
+function checkPassword() {
+  const val = document.getElementById('pwInput').value;
+  const inp = document.getElementById('pwInput');
+  if (val === SITE_PASSWORD) {
+    editUnlocked = true;
+    closePwModal();
+    enableEditMode();
+  } else {
+    inp.classList.add('error');
+    document.getElementById('pwErr').style.display = 'block';
+    inp.value = '';
+    setTimeout(() => inp.classList.remove('error'), 400);
+  }
+}
+
+function enableEditMode() {
+  document.body.classList.add('edit-active');
+  document.getElementById('editBar').classList.add('visible');
+  document.getElementById('editFab').classList.add('active');
+  document.getElementById('editFabLabel').textContent = 'Exit edit';
+  document.querySelectorAll('[data-editable]').forEach(el => el.setAttribute('contenteditable','true'));
+}
+
+function disableEditMode() {
+  editUnlocked = false;
+  document.body.classList.remove('edit-active');
+  document.getElementById('editBar').classList.remove('visible');
+  document.getElementById('editFab').classList.remove('active');
+  document.getElementById('editFabLabel').textContent = 'Edit site';
+  document.querySelectorAll('[data-editable]').forEach(el => el.setAttribute('contenteditable','false'));
+}
+
+function closePwModal() {
+  document.getElementById('pwModal').classList.remove('open');
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwErr').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.setAttribute('data-editable','true');
+    el.setAttribute('contenteditable','false');
+  });
+});
+
 /* ── About image ── */
 function handleAboutImg(input) {
   if (!input.files[0]) return;
@@ -787,8 +947,9 @@ function toEmbedUrl(url) {
 }
 
 /* Close modals on backdrop click */
-document.getElementById('linkModal').addEventListener('click', function(e) { if(e.target === this) closeLinkModal(); });
-document.getElementById('reelModal').addEventListener('click', function(e) { if(e.target === this) closeReelModal(); });
+document.getElementById('linkModal').addEventListener('click', function(e){ if(e.target===this) closeLinkModal(); });
+document.getElementById('reelModal').addEventListener('click', function(e){ if(e.target===this) closeReelModal(); });
+document.getElementById('pwModal').addEventListener('click', function(e){ if(e.target===this) closePwModal(); });
 </script>
 </body>
 </html>
